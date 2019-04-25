@@ -5,90 +5,104 @@ services:
       hostname: rs1_1
       image: $MONGODB_IMAGE
       restart: always
-      command: mongod --port 27017 --replSet rs1 --shardsvr
+      command: mongod --port 27017 --replSet rs1 --shardsvr --auth --keyFile auth.key
       volumes:
       - ./volumes/rs1_1:/data/db
+      - ./auth.key:/auth.key
       networks:
       - mongo
   rs1_2:
       hostname: rs1_2
       image: $MONGODB_IMAGE
       restart: always
-      command: mongod --port 27017 --replSet rs1 --shardsvr
+      command: mongod --port 27017 --replSet rs1 --shardsvr --auth --keyFile auth.key
       volumes:
       - ./volumes/rs1_2:/data/db
+      - ./auth.key:/auth.key
       networks:
       - mongo
   rs1_3:
       hostname: rs1_3
       image: $MONGODB_IMAGE
       restart: always
-      command: mongod --port 27017 --replSet rs1 --shardsvr
+      command: mongod --port 27017 --replSet rs1 --shardsvr --auth --keyFile auth.key
       volumes:
       - ./volumes/rs1_3:/data/db
+      - ./auth.key:/auth.key
       networks:
       - mongo
+
 
   rs2_1:
       hostname: rs2_1
       image: $MONGODB_IMAGE
       restart: always
-      command: mongod --port 27017 --replSet rs2 --shardsvr
+      command: mongod --port 27017 --replSet rs2 --shardsvr --keyFile auth.key
       volumes:
       - ./volumes/rs2_1:/data/db
+      - ./auth.key:/auth.key
       networks:
       - mongo
   rs2_2:
       hostname: rs2_2
       image: $MONGODB_IMAGE
       restart: always
-      command: mongod --port 27017 --replSet rs2 --shardsvr
+      command: mongod --port 27017 --replSet rs2 --shardsvr  --keyFile auth.key
       volumes:
       - ./volumes/rs2_2:/data/db
+      - ./auth.key:/auth.key
       networks:
       - mongo
   rs2_3:
       hostname: rs2_3
       image: $MONGODB_IMAGE
       restart: always
-      command: mongod --port 27017 --replSet rs2 --shardsvr
+      command: mongod --port 27017 --replSet rs2 --shardsvr  --keyFile auth.key
       volumes:
       - ./volumes/rs2_3:/data/db
+      - ./auth.key:/auth.key
       networks:
       - mongo
+
 
   config1:
       hostname: config1
       image: $MONGODB_IMAGE
       restart: always
-      command: mongod --port 27017 --configsvr --replSet config
+      command: mongod --port 27017 --configsvr --replSet config --auth --keyFile auth.key
       volumes:
         - ./volumes/config1:/data/configdb
+        - ./auth.key:/auth.key
       networks:
         - mongo
   config2:
       hostname: config2
       image: $MONGODB_IMAGE
       restart: always
-      command: mongod --port 27017 --configsvr --replSet config
+      command: mongod --port 27017 --configsvr --replSet config --auth --keyFile auth.key
       volumes:
         - ./volumes/config2:/data/configdb
+        - ./auth.key:/auth.key
       networks:
         - mongo
   config3:
       hostname: config3
       image: $MONGODB_IMAGE
       restart: always
-      command: mongod --port 27017 --configsvr --replSet config
+      command: mongod --port 27017 --configsvr --replSet config --auth --keyFile auth.key
       volumes:
         - ./volumes/config3:/data/configdb
+        - ./auth.key:/auth.key
       networks:
         - mongo
+
 
   router:
       image: $MONGODB_IMAGE
       restart: always
-      command: mongos --port 27017 --configdb config/config1:27017,config2:27017,config3:27017 --bind_ip_all
+      command: mongos --port 27017 --configdb config/config1:27017,config2:27017,config3:27017 --bind_ip_all --keyFile auth.key
+      volumes:
+        - ./auth.key:/auth.key
       networks:
       - mongo
       depends_on:
@@ -101,7 +115,6 @@ services:
         - rs2_1
         - rs2_2
         - rs2_3
-
 
 networks:
   mongo:

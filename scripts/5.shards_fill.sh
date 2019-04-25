@@ -11,5 +11,8 @@ do
     --rm $MONGODB_IMAGE \
     mongofiles \
     --host router:27017 \
+    --username test \
+    --password pwd \
+    --authenticationDatabase admin \
     put test.jpg
 done

@@ -5,7 +5,7 @@ services:
       hostname: rs1_1
       image: $MONGODB_IMAGE
       restart: always
-      command: mongod --port 27017 --replSet rs1 --shardsvr
+      command: mongod --port 27017 --replSet rs1
       volumes:
       - ./volumes/rs1_1:/data/db
       networks:
@@ -14,7 +14,7 @@ services:
       hostname: rs1_2
       image: $MONGODB_IMAGE
       restart: always
-      command: mongod --port 27017 --replSet rs1 --shardsvr
+      command: mongod --port 27017 --replSet rs1
       volumes:
       - ./volumes/rs1_2:/data/db
       networks:
@@ -23,9 +23,37 @@ services:
       hostname: rs1_3
       image: $MONGODB_IMAGE
       restart: always
-      command: mongod --port 27017 --replSet rs1 --shardsvr
+      command: mongod --port 27017 --replSet rs1
       volumes:
       - ./volumes/rs1_3:/data/db
+      networks:
+      - mongo
+
+  rs2_1:
+      hostname: rs2_1
+      image: $MONGODB_IMAGE
+      restart: always
+      command: mongod --port 27017 --replSet rs2
+      volumes:
+      - ./volumes/rs2_1:/data/db
+      networks:
+      - mongo
+  rs2_2:
+      hostname: rs2_2
+      image: $MONGODB_IMAGE
+      restart: always
+      command: mongod --port 27017 --replSet rs2
+      volumes:
+      - ./volumes/rs2_2:/data/db
+      networks:
+      - mongo
+  rs2_3:
+      hostname: rs2_3
+      image: $MONGODB_IMAGE
+      restart: always
+      command: mongod --port 27017 --replSet rs2
+      volumes:
+      - ./volumes/rs2_3:/data/db
       networks:
       - mongo
 
@@ -70,6 +98,9 @@ services:
         - rs1_1
         - rs1_2
         - rs1_3
+        - rs2_1
+        - rs2_2
+        - rs2_3
 
 networks:
   mongo:
